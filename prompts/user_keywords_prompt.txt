@@ -1,0 +1,28 @@
+
+I will provide you with the review texts written by a user about some Amazon products they have purchased.
+Generate from 1 to 5 keywords from the provided user reviews. The keywords should capture
+the main user interests. Therefore, they should be representative of the aspects that the user
+considers important in its reviews. ATTENTION: the keywords must be general and not related to a specific product.
+The keywords must summarize the general aspects in which the user is most interested in when buying the products (e.g. robust, cheap, durable, flexible, etc.).
+
+IMPORTANT: the 1 to 5 keywords must summarize all the reviews, I do NOT want different keywords for each review.
+
+Such keywords should help a recommender system to suggest more relevant products for their future purchasing needs.
+
+YOU MUST provide an output that contains the text of the keywords separated by semicolons, without any additional text.
+The complete list of keywords should be enclosed between curly brackets.
+
+
+The data that I will provide is composed of a list of review texts, ranging from 1 up to 10 reviews, using the
+following format:
+
+[Review <k>] =
+title of review
+text of review
+
+, where k=1,2,3,... is the number of the review considered.
+
+
+{reviews_text_data}
+
+

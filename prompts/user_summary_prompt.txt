@@ -1,0 +1,22 @@
+Hi Llama, can you help me?
+
+I will provide you with the review texts written by a user about some Amazon product they have purchased.
+Your task is to generate a plausible, general, and concise description of the user, focusing on the aspects that they
+consider important in their reviews.
+Such description should help a recommender system to suggest more relevant products for their future purchasing needs.
+
+The data that I will provide is composed of a list of review texts, ranging from 1 up to 10 reviews, using the
+following format:
+
+[Review <k>] =
+title of review
+text of review
+
+, where k=1,2,3,... is the number of the review considered.
+
+Please provide an output that contains the text of the user description, without any additional text.
+
+{reviews_text_data}
+
+
+[User Description] =

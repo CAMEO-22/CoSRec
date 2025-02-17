@@ -1,0 +1,52 @@
+Can you imagine a possible conversation between a user and a system, using the information provided?
+The system is composed of two components: a search module and a recommendation module.
+The search module retrieves documents with general information from a heterogeneous textual corpus.
+The recommendation module suggests products suitable to satisfy the user needs of the users.
+The information extracted from both modules are combined in the form of natural language utterances.
+
+The conversation should start with a short introduction from the user, which is looking to buy a product
+to satisfy his/her [User Need], and the goal is for the system to suggest [Target Product] as the best
+purchase. The target product must be mentioned for the first time by the system, possibly together with
+similar products, but only in the second half of the conversation. Both agents should interact in a way
+to explore the main brands, categories, and features, to guide the user towards the target product.
+
+When appropriate, the user poses explorative questions in search style, asks for more information,
+or requires clarifications to the system about both macro subtopics and specific details.
+The user must pose at least two or three explorative questions during the conversation, with the
+objective of broadening their knowledge of some topic previously mentioned in the conversation.
+Such questions must require information and details found in the [Textual Corpus].
+The system reply focuses in satisfying this knowledge need, summarizing in the main aspects but also
+providing fine-grained details of the subject, if required.
+
+At the end of the conversation the system should have convinced the user to buy the [Target Product].
+Remember that you have the [Catalogue] of different products along with the [Textual Corpus] of different
+documents with general information at your disposal. Also, remember that the system has to explore
+the user needs to understand which of these products is the best suited for him/her.
+
+The conversation should contain from 6 to 8 utterances marked to recognize the user and the system
+utterances. Please provide an output that contains only the utterances, the utterances of the user
+should start with "U:" while the utterances of the system should start with "S:".
+
+Each product contains some fields:
+the "Title" is the name,
+the "Description" is the textual description,
+the "Price" is the price in US dollars,
+the "Review <k>" (with k=1,2,3) are the opinions given by some users.
+
+Each document contains some fields:
+the "Text" is the textual content.
+
+Please provide an output that contains the text of the conversation, without any additional text.
+
+[User Need]:
+{query_text}
+[Target Product]:
+{target_title}
+
+[Catalogue]:
+{catalogue_text}
+
+[Textual Corpus]:
+{corpus_text}
+
+[Conversation]:

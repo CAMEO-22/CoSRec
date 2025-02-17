@@ -1,0 +1,14 @@
+I will provide you with the data of a product, and your task is to generate a plausible, very concise
+(at most 5 words long),  and general search query, suitable for an hypothetical user to retrieve
+the given product among the top results of a state-of-the-art recommender system.
+
+The product is composed of the following data: 
+the [Title] is the name , 
+the [Description] is the textual description, 
+the [Review <k>] (with k=1,2,3) are the opinions given by some users.
+
+Please provide an output that contains the text of the query, without any additional text.
+
+{product_text}
+
+[Query] =
