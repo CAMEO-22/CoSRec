@@ -47,4 +47,5 @@ Moreover, each partition of CoSRec (Raw, Crowd and Curated) in the dataset folde
 - intents_annotations.jsonl: raw labelled intents associated to each user utterance of each conversation (Crowd Only)
 - profiles.json: user profile summaries associated to each conversation.
 - keywords.json: user profile keywords associated to each conversation.
+- qrels.json: relevance judgments in TREC-style format
 
