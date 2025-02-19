@@ -72,12 +72,6 @@ CoSRec Raw is a set of 291 annotated conversations.
 This partitions contains the following files:
 
 -  **conversations.jsonl**: json file containing a conversation for each line. Each conversation corresponds to a dictionary with a single key, the conversation ID, and a single value, the conversation text. The user's utterances start with "U:" and are separated from the system's utterances, starting with "S:" by means of "\n".
-```
-Example of a conversation:
-{
-    "CoSRec-Curated_8": "U: [...] \n S: [...] \n[...]"
-}
-```
 -  **quality.jsonl**: json file containing the ratings provided by the annotators during the quality assessment. Each line of the file corresponds to a conversation. Each conversation takes the form of a dictionary with a single key, the conversation ID, and a single value, the list of ratings. The list is composed of dictionaries. Each dictionary corresponds to the ratings of a user and has as keys the quality aspects ('coherence', 'logicality', 'informativeness', 'fluency') and as values the ratings provided by the annotator.
 -  **intent_annotations.jsonl**: json file containing the raw human-labelled intents. Each line of the file corresponds to a conversation. Each conversation takes the form of a dictionary with a single key, the conversation ID, and a single value, the list of intents for each utterance. The list is composed of dictionaries. Each dictionary corresponds to an utterance and has two fields: the utterance id ('utterance'), which is the index of the user utterance in the conversation, and the intent list ('intent_annotations'). The intent list is constituted by a sequence of lists, each representing the intents identified for the considered utterance by a single annotator. For each intent we report the type ('type') and the stand-alone formulation ('query').
 -  **profiles.jsonl**: json file containing the profile summaries of the users considered for each conversation. Each line of the file corresponds to a conversation. Each conversation takes the form of a dictionary with a single key, the conversation ID, and a single value, a dictionary containing the user profiles summaries. The user profiles summaries dictionary has as keys the IDs of the considered users and as values the summaries of the users' profiles.
