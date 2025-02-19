@@ -18,6 +18,17 @@ _Example of a conversation:_
 </p>
 
 
+The distribution of the ratings provided by the annotators during  the quality assessment, for the conversations in CoSRec-Curated and CoSRec-Crowd is depicted in the following figures:
+<p align="center">
+ <img src="images/quality_assessment_avg_results.png" alt="Average rating distribution" width="500" margin="auto"/>
+ <img src="images/quality_assessment_features_results.png" alt="Rating distribution for each feature" width="500" margin="auto"/>
+</p>
+
+The distribution of the relevance judgments for the intents labelled  in the conversations of CoSRec-Curated is shown in the following figure:
+<p align="center">
+ <img src="images/relevant_per_intent_distribution.png" alt="Relevance Judgments per Intent" width="500" margin="auto"/>
+</p>
+
 ## Repository Structure
 
 ```
