@@ -83,10 +83,81 @@ CoSRec Raw is a set of 291 annotated conversations.
 This partitions contains the following files:
 
 -  **conversations.jsonl**: json file containing a conversation for each line. Each conversation corresponds to a dictionary with a single key, the conversation ID, and a single value, the conversation text. The user's utterances start with "U:" and are separated from the system's utterances, starting with "S:" by means of "\n".
+```
+A line of the 'conversations.jsonl' file:
+...
+{
+    "CoSRec-Crowd_4": "U: Hi, I'm looking to buy a book about Jasper Johns' artwork analysis.\nS: [...] \nU: [...]"
+}
+...
+```
 -  **quality.jsonl**: json file containing the ratings provided by the annotators during the quality assessment. Each line of the file corresponds to a conversation. Each conversation takes the form of a dictionary with a single key, the conversation ID, and a single value, the list of ratings. The list is composed of dictionaries. Each dictionary corresponds to the ratings of a user and has as keys the quality aspects ('coherence', 'logicality', 'informativeness', 'fluency') and as values the ratings provided by the annotator.
+```
+A line of the 'quality.jsonl' file:
+...
+{
+    "CoSRec-Crowd_4":[     #ID OF THE CONVERSATION
+        {
+            "fluency": 4,    #DICTIONARY OF THE RATINGS OF ONE ANNOTATOR
+            "coherence": 4,
+            "logicality": 3,
+            "informativeness": 4
+        }, 
+        ...
+        ]
+}
+...
+```
 -  **intent_annotations.jsonl**: json file containing the raw human-labelled intents. Each line of the file corresponds to a conversation. Each conversation takes the form of a dictionary with a single key, the conversation ID, and a single value, the list of intents for each utterance. The list is composed of dictionaries. Each dictionary corresponds to an utterance and has two fields: the utterance id ('utterance'), which is the index of the user utterance in the conversation, and the intent list ('intent_annotations'). The intent list is constituted by a sequence of lists, each representing the intents identified for the considered utterance by a single annotator. For each intent we report the type ('type') and the stand-alone formulation ('query').
+```
+A line of the 'intent_annotations.jsonl' file:
+...
+{
+    "CoSRec-Crowd_4": [    #ID OF THE CONVERSATION
+        {
+            "utterance": 0,    #ID (index) OF THE USER UTTERANCE WITHIN THE CONVERSATION
+            "intent_annotations": [    #LIST OF ANNOTATIONS
+                [{"type": "recommendation", "query": "book about Jasper Johns' artowork analysis"}],     #INTENT TYPE(s) AND STAND-ALONE FORMULATION(s) OF A SINGLE ANNOTATOR
+                [{"type": "recommendation", "query": "Jasper Johns artwork analysis book"}],
+            ]
+        }, 
+        {
+            "utterance": 1,
+            "intent_annotations": [
+                ...
+            ]
+        },
+        ...
+        ]
+}
+...
+```
 -  **profiles.jsonl**: json file containing the profile summaries of the users considered for each conversation. Each line of the file corresponds to a conversation. Each conversation takes the form of a dictionary with a single key, the conversation ID, and a single value, a dictionary containing the user profiles summaries. The user profiles summaries dictionary has as keys the IDs of the considered users and as values the summaries of the users' profiles.
+```
+A line of the 'profiles.jsonl' file:
+...
+{
+    "CoSRec-Crowd_4": {    #ID OF THE CONVERSATION
+        "AF7VWJNZHU27NCVHLW5O4ZIJ7TOQ": "Values academic content over presentation or novelty, prioritizes quality and precision in materials and products.",    #ID AND PROFILE SUMMARY OF A USER
+        "AG6ARYX42WRYVWFCTCMJINWBRBDQ": "Someone who values relaxation and ambiance, likely appreciates unique or humorous content (e.g., love for cat-themed anecdotes), enjoys creating or experiencing pleasant fragrances (e.g., soap making), and prioritizes convenience and quality in their purchases.", 
+        ...
+    }
+}
+...
+```
 -  **keywords.jsonl**: json file containing the profile keywords of the users considered for each conversation. Each line of the file corresponds to a conversation. Each conversation takes the form of a dictionary with a single key, the conversation ID, and a single value, a dictionary containing the user profiles keywords. The user profiles keywords dictionary has as keys the IDs of the considered users and as values the lists of keywords of the user.
+```
+A line of the 'keywords.jsonl' file:
+...
+{
+    "CoSRec-Crowd_4": {    #ID OF THE CONVERSATION
+        "AF7VWJNZHU27NCVHLW5O4ZIJ7TOQ": ["good", "cheap", "durable", "robust"],    #ID AND PROFILE KEYWORDS OF A USER
+        "AG6ARYX42WRYVWFCTCMJINWBRBDQ": ["relaxing", "cheap", "fragrant", "addictive"],
+        ...
+    }
+}
+...
+```
 
 #### CoSRec Curated
 
@@ -94,8 +165,30 @@ CoSRec Raw is a set of 20 deeply annotated conversations, where the raw annotato
 
 This partitions contains the following files:
 -  **conversations.jsonl**: same as CoSRec Crowd.
--  **quality.jsonl**: same as CoSRec Crowd. Each line of the file corresponds to a conversation. Each conversation takes the form of a dictionary with a single key, the conversation ID, and a single value, the list of intents for each utterance. The list is composed of dictionaries. Each dictionary corresponds to an utterance and has two fields: the utterance id ('utterance'), which is the index of the user utterance in the conversation, and the intent list ('intents'). The intent list is constituted by a sequence of dictionaries, each representing a single intents  and reporting: the intent id ('id'), the intent type ('type') and the list of stand-alone formulaitons ('query_variants'). **Note:** this file does NOT contain the personalized recommendation intents, they can be generated by combining this file and the 'keywords.jsonl' files.
--  **intents.jsonl**: json file containing the reviewd human-labelled intents.
+-  **quality.jsonl**: same as CoSRec Crowd.
+-  **intents.jsonl**: json file containing the reviewd human-labelled intents. Each line of the file corresponds to a conversation. Each conversation takes the form of a dictionary with a single key, the conversation ID, and a single value, the list of intents for each utterance. The list is composed of dictionaries. Each dictionary corresponds to an utterance and has two fields: the utterance id ('utterance'), which is the index of the user utterance in the conversation, and the intent list ('intents'). The intent list is constituted by a sequence of dictionaries, each representing a single intents  and reporting: the intent id ('id'), the intent type ('type') and the list of stand-alone formulaitons ('query_variants'). **Note:** this file does NOT contain the personalized recommendation intents, they can be generated by combining this file and the 'keywords.jsonl' files.
+```
+{
+    "CoSRec-Curated_1": [    #ID OF THE CONVERSATION
+        {
+            "utterance": 0,    #ID (index) OF THE USER UTTERANCE WITHIN THE CONVERSATION
+            "intents": [    #LIST OF INTENTS IN THE UTTERANCE
+            {
+                "id": "CoSRec-Curated_1_0_0",    #ID (index) OF THE INTENT WITHIN THE CONSIDERED USER UTTERANCE (CoSRec-Curated_<conversation_id>_<utterance_id>_<index>)
+                "type": "recommendation",        #INTENT TYPE
+                "query_variants": [              #STAND-ALONE FORMULATIONS (canonical formulation and reformulations)
+                    "premium rubber floor car mats for Jeep Cherokee",
+                    "Rubber floor car mats with premium rubber for Jeep Cherokee",
+                    ...
+                ]
+            },
+            ...
+            ]
+        },
+        ...
+    ]
+}
+```
 -  **profiles.jsonl**: same as CoSRec Crowd.
 -  **keywords.jsonl**: same as CoSRec Crowd.
 -  **qrels.qrels**: file containing the relevance judgments for all the intents in TREC-style format (NOTE: the ground truth can be splitted in search ground truth and recommendation ground truth based on the topic id. The recommendation topic ids contain the cheracter '#' while the search topic ids do not).
