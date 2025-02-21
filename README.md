@@ -17,12 +17,29 @@ _Example of a conversation:_
  <img src="images/conversation_example_lavender.png" alt="Conversation" width="500" margin="auto"/>
 </p>
 
-
-The distribution of the ratings provided by the annotators during  the quality assessment, for the conversations in CoSRec-Curated and CoSRec-Crowd is depicted in the following figures:
+The CoSRec dataset comes with human-made quality assessments for a subset of 311 conversations (∼3%) corresponding to CoSRec-Crowd and CoSRec-Curated.
+In particular, the annotation process involved 99 semi-expert human annotators.  
+The quality assessments are given on a 1 to 5 scale and concern 4 aspects: fluency, informativeness, logicality and coherence.  
+The distribution of the ratings provided by the annotators during  the quality assessment, for the conversations in CoSRec-Curated and CoSRec-Crowd, is depicted in the following figures:
 <p align="center">
  <img src="images/quality_assessment_avg_results.png" alt="Average rating distribution" width="500" margin="auto"/>
  <img src="images/quality_assessment_features_results.png" alt="Rating distribution for each feature" width="500" margin="auto"/>
 </p>
+
+Moreover, CoSRec includes also human labelled intents for each utterance of the CoSRec-Crowd and CoSRec-Curated conversations.
+Each utterance is annotated with zero, one, or more among “search”, “recommendation”, and “product detail” intents:
+- Search: The user asked for general information about a topic related to the product they are discussing.
+- Recommendation: The user asks for some products to be suggested, according to her requirements.
+- Product Detail: The user inquires about details of the product being discussed.
+
+For the 20 CoSRec-Curated conversations, the the labelled intents were further refined by reviewing cases where annotators did not reach unanimity.  
+Along with intent labels, human annotators also provided a stand-alone formulation. This formulation is a self-explanatory textual description of the information need, independent of the conversation’s context, as it fully encapsulates it.
+Since each conversation, and therefore each utterance, was annotated by multiple annotators, we define the longest stand-alone formulation as the canonical formulation. In contrast, the others are considered reformulations.
+
+The CoSRec-Curated portion of the dataset contains a total of 17k relevance judgments for user intents related to search and recommendation.   
+The judgments for the search intents are created by following the standard TREC-style annotation procedure (pooling passages retrieved from MS-MARCO).
+The judgments for the recommendation intents, instead, are created taking into account personalization. In particular, a pool of product for each intent has been retrieved from a filtered version of the Amazon Reviews catalogue using personalized requests (stand-alone formulations concatenated with some keywords representative of the user for which the request is personalized). Then the assessors were required to assess the relevance of the retrieved products for the request taking into account also a summary of the profile of the user for which the request was personalized.  
+For both the search and recommendation intents the relevance has been assessed employing 3 relevance labels: (0) Not Relevant, (1) Partially Relevant, (2) Highly Relevant.
 
 The distribution of the relevance judgments for the intents labelled  in the conversations of CoSRec-Curated is shown in the following figure:
 <p align="center">
