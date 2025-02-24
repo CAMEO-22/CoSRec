@@ -67,12 +67,8 @@ The distribution of the relevance judgments for the intents labeled in the conve
 │       ├── keywords.jsonl
 │       └── profiles.jsonl 
 ├── scripts
-│   ├── generation
-│   │   ├── step1_extract_random_products.py
-│   │   ├── step2_data_for_conversations.py
-│   │   ├── step3_prepare_data_to_generate_conversations.py
-│   │   └── step4_generate_conversations.py
 │   └── catalogue_preprocessing.py
+│   └── generate_conversations.py
 └── prompts
     ├── user_summary_prompt.txt
     ├── user_keywords_prompt.txt
@@ -91,7 +87,7 @@ This repository is structured as follows:
 
 ### Dataset
 
-This directory holds the files constituting the CoSRec dataset, which is splitted in 3 partitions: CoSRec Raw, CoSRec Crowd, CoSRec Curated.
+This directory holds the files constituting the CoSRec dataset, which is split in 3 partitions: CoSRec Raw, CoSRec Crowd, CoSRec Curated.
 
 #### CoSRec Raw
 
