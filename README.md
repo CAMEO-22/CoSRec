@@ -67,6 +67,11 @@ The distribution of the relevance judgments for the intents labelled  in the con
 │       ├── keywords.jsonl
 │       └── profiles.jsonl 
 ├── scripts
+│   ├── generation
+│   │   ├── step1_extract_random_products.py
+│   │   ├── step2_data_for_conversations.py
+│   │   ├── step3_prepare_data_to_generate_conversations.py
+│   │   └── step4_generate_conversations.py
 │   └── catalogue_preprocessing.py
 └── prompts
     ├── user_summary_prompt.txt
@@ -80,7 +85,7 @@ This repository is structured as follows:
     - raw: 8938  non-annotated conversations
     - crowd: 291  annotated conversations
     - curated: 20 deeply annotated conversations
-- scripts: holds the scripts needed to process the Amazon Reviews dataset and obtain its filtered version (AR-filtered)
+- scripts: holds the scripts used to generate the conversations and the script needed to process the Amazon Reviews dataset, obtaining its filtered version (AR-filtered).
 - prompts: holds the prompts used for  generating the conversations, extracting a search-like query from a product, extracting the user profile summary and keywords from the reviews.
 
 
@@ -219,8 +224,11 @@ A line of the 'intents.jsonl' file:
 
 ### Scripts
 
-This directory holds the scripts needed to process the Amazon Reviews dataset and obtain its filtered version (AR-filtered).
+This directory holds the subdirectory 'generation' which contains the scripts used to generate the conversations and the script needed to process the Amazon Reviews dataset, obtaining its filtered version (AR-filtered).
+
 #### How to Run
+
+##### Catalogue Pre-processing (AR-filtered)
 To run the catalogue preprocessing script it is necessary to specify some arguments:
 - threshold_too_short_description: the minimum length of the description field of a product to consider it as a valid product (default: 10).
 - threshold_english_title_ascii: the percentage of characters in the title of a product that neeed to be standard-ASCII characters to consider the product as a valid product (default: 0.5).
@@ -234,6 +242,15 @@ Example :
 ```
 python catalogue_preprocessing.py --metas_folder "AmazonReviews/meta/" --reviews_folder "AmazonReviews/reviews/" --create_output_file True --output_filename "processed_catalogue.jsonl"
 ```
+##### Conversations Generation
+
+The scripts needed to generate the conversations are contained in the subfolder 'generation' and their name start with "step" followed by a number which indicates the order in which the files should be run. To run them, we suggest to download all the files related to the Amazon Reviews dataset (https://amazon-reviews-2023.github.io/) into a folder named 'AmazonReviews' and to set an environment variable 'CAMEO_DATA' ponting to its parent folder. This way the generation scripts can be run, in order, by executing:
+```
+python <file_name>
+```
+Otherwise, at the beginning of each file, it is possible to change the paths to be used (method 'parse_args'). 
+
+**Note**: the catalogue processing script must be executed before generating the conversations. 
 
 ### Prompts
 
