@@ -12,15 +12,18 @@ def parse_args() -> argparse.Namespace:
     args.add_argument("--threshold_too_short_description",
                       dest="threshold_too_short_description",
                       type=int,
-                      default=10)
+                      default=10,
+                      required=False)
     args.add_argument("--threshold_english_title_ascii",
                       dest="threshold_english_title_ascii",
                       type=float,
-                      default=0.5)
+                      default=0.5,
+                      required=False)
     args.add_argument("--threshold_english_description_ascii",
                       dest="threshold_english_description_ascii",
                       type=float,
-                      default=0.8)
+                      default=0.8,
+                      required=False)
     args.add_argument("--metas_folder",
                       dest="metas_folder",
                       type=str,
@@ -32,7 +35,7 @@ def parse_args() -> argparse.Namespace:
     args.add_argument("--create_output_file",
                       dest="create_output_file",
                       type=bool,
-                      required=True)
+                      required=False)
     args.add_argument("--output_filename",
                       dest="output_filename",
                       type=str,
