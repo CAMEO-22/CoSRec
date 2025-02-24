@@ -220,6 +220,20 @@ A line of the 'intents.jsonl' file:
 ### Scripts
 
 This directory holds the scripts needed to process the Amazon Reviews dataset and obtain its filtered version (AR-filtered).
+#### How to Run
+To run the catalogue preprocessing script it is necessary to specify some arguments:
+- threshold_too_short_description: the minimum length of the description field of a product to consider it as a valid product (default: 10).
+- threshold_english_title_ascii: the percentage of characters in the title of a product that neeed to be standard-ASCII characters to consider the product as a valid product (default: 0.5).
+- threshold_english_description_ascii: the percentage of characters in the description of a product that neeed to be standard-ASCII characters to consider the product as a valid product (default: 0.8).
+- metas_folder (MANDATORY): the folder where all the meta data related to the products of Amazon Reviews are stored. The files can be downloaded at: https://amazon-reviews-2023.github.io/.
+- reviews_folder (MANDATORY): the folder where all the reviews related to the products of Amazon Reviews are stored. The files can be downloaded at: https://amazon-reviews-2023.github.io/.
+- create_output_file (MANDATORY): boolean flag to be set to create the output file (suggestion: always set it to true).
+- output_filename (MANDATORY): name (and path) of the output file.
+
+Example :
+```
+python catalogue_preprocessing.py --metas_folder "AmazonReviews/meta/" --reviews_folder "AmazonReviews/reviews/" --create_output_file True --output_filename "processed_catalogue.jsonl"
+```
 
 ### Prompts
 
