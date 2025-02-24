@@ -12,18 +12,15 @@ def parse_args() -> argparse.Namespace:
     args.add_argument("--threshold_too_short_description",
                       dest="threshold_too_short_description",
                       type=int,
-                      default=10,
-                      required=True)
+                      default=10)
     args.add_argument("--threshold_english_title_ascii",
                       dest="threshold_english_title_ascii",
                       type=float,
-                      default=0.5,
-                      required=True)
+                      default=0.5)
     args.add_argument("--threshold_english_description_ascii",
                       dest="threshold_english_description_ascii",
                       type=float,
-                      default=0.8,
-                      required=True)
+                      default=0.8)
     args.add_argument("--metas_folder",
                       dest="metas_folder",
                       type=str,
