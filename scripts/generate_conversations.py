@@ -3,14 +3,76 @@ import json
 import ollama
 import operator
 import os
+import pyserini.search.faiss
+import pyserini.search.lucene
 import random
 import re
-import retrieval
 import sys
 import time
 import traceback
 import transformers
-from typing import Dict, List
+from typing import Dict, List, Optional, Tuple
+
+
+class Retriever:
+    def __init__(self, sparse_index_folder: str, dense_index_folder: Optional[str], k1: float = 1.2, b: float = 0.75):
+        # Check that the first parameter must be provided.
+        assert sparse_index_folder is not None
+        # Check that the sparse index parameter is the path to a valid directory.
+        assert isinstance(sparse_index_folder, str) and os.path.exists(sparse_index_folder) and \
+               os.path.isdir(sparse_index_folder)
+        # Check that the dense index parameter is the path to a valid directory.
+        assert dense_index_folder is None or (isinstance(dense_index_folder, str) and
+                                              os.path.exists(dense_index_folder) and os.path.isdir(dense_index_folder))
+
+        # Load the sparse index from disk.
+        self.sparse_searcher = pyserini.search.lucene.LuceneSearcher(sparse_index_folder)
+        self.sparse_searcher.set_bm25(k1=k1, b=b)
+        del sparse_index_folder
+
+        if dense_index_folder is not None:
+            # Load the dense index from disk.
+            self.dense_searcher = pyserini.search.faiss.FaissSearcher(dense_index_folder,
+                                                                      "castorini/tct_colbert-v2-hnp-msmarco")
+        else:
+            # Set the dense searcher as None, since it is not provided.
+            self.dense_searcher = None
+        del dense_index_folder
+
+
+    def __call__(self, query: str, top_k: int) -> List[Tuple[str, str]]:
+        assert query is not None and isinstance(query, str)
+        assert top_k is not None and isinstance(top_k, int) and top_k > 0
+
+        text_keys = { "contents", "segment" }
+
+        # Perform the search using the sparse index.
+        sparse_hits = {str(x.docid): i for i, x in enumerate(self.sparse_searcher.search(query, top_k), start=1)}
+
+        if self.dense_searcher is not None:
+            # Perform the search using the sparse index.
+            dense_hits = {str(x.docid): i for i, x in enumerate(self.dense_searcher.search(query, top_k), start=1)}
+            del query
+
+            # Determine the stratus for each document.
+            stratum_hits = {k: (sparse_hits.get(k, top_k + 1), dense_hits.get(k, top_k + 1))
+                            for k in sparse_hits.keys() | dense_hits.keys()}
+            stratum_hits = {k: (min(v[0], v[1]), max(v[0], v[1])) for k, v in stratum_hits.items()}
+            del sparse_hits, dense_hits
+        else:
+            stratum_hits = {k: (v, top_k + 1) for k, v in sparse_hits.items()}
+            del sparse_hits, query
+
+        # Select the 'top k' results from stratum data, then sort by stratum in ascending order.
+        stratum_hits = [(v[0], v[1], k) for k, v in stratum_hits.items()]
+        stratum_hits = sorted(stratum_hits, key=operator.itemgetter(0, 1), reverse=False)[:top_k]
+
+        # Extract the text from the sparse Lucene-based index.
+        raws = {k: json.loads(self.sparse_searcher.doc(k).raw()) for _, _, k in stratum_hits}
+        texts = {k: v[next(x for x in text_keys & v.keys())] for k, v in raws.items()}
+        del text_keys, raws
+
+        return [(k, texts[k]) for _, _, k, in stratum_hits]
 
 
 def parse_args() -> argparse.Namespace:
@@ -240,8 +302,7 @@ def main():
     # Load the products retriever using the sparse and dense indexes stored on disk.
     # ------------------------------------------------------------------------------------------------------------------
     st = time.time_ns()
-    retr = retrieval.Retriever(args.catalogue_sparse_index_folder, args.catalogue_dense_index_folder,
-                               args.bm25_k1, args.bm25_b)
+    retr = Retriever(args.catalogue_sparse_index_folder, args.catalogue_dense_index_folder, args.bm25_k1, args.bm25_b)
     print(f"Products retriever loaded successfully in {(time.time_ns() - st) / NS_IN_S:.3f} s.\n", flush=True)
     print("", flush=True)
     del st
@@ -311,9 +372,8 @@ def main():
     # Load the documents retriever using the sparse and dense indexes stored on disk.
     # ------------------------------------------------------------------------------------------------------------------
     st = time.time_ns()
-    retr = retrieval.Retriever(args.documents_sparse_index_folder, None, args.bm25_k1, args.bm25_b)
-    # retr = retrieval.Retriever(args.documents_sparse_index_folder, args.documents_dense_index_folder,
-    #                            args.bm25_k1, args.bm25_b)
+    retr = Retriever(args.documents_sparse_index_folder, None, args.bm25_k1, args.bm25_b)
+    # retr = Retriever(args.documents_sparse_index_folder, args.documents_dense_index_folder, args.bm25_k1, args.bm25_b)
     print(f"Documents retriever loaded successfully in {(time.time_ns() - st) / NS_IN_S:.3f} s.\n", flush=True)
     print("", flush=True)
     del st
