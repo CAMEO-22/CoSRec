@@ -256,10 +256,12 @@ To run the script to generate the conversations, it is required to specify these
 - documents_sparse_index_folder (MANDATORY): path to the folder containing the BM25-based sparse index of the MS-MARCO corpus, built with Pyserini.
 - num_documents: the number of documents to consider in the generation prompt (default: 10).
 - query_prompt_filename (MANDATORY): path to the textual file containing the prompt used to generate the query used for document retrieval.
-- query_model: the name of the LLM model used with Ollama to generate the query used for document retrieval (default: "llama3.1").
+- query_tokenizer: the name of the LLM model used to generate the query used for document retrieval, which must be the same as 'query_model' but available on Huggingface. This parameter is required, since we load its tokenizer exclusively to count, for each LLM inference, the number of tokens found in the input prompt. (default: "meta-llama/Llama-3.1-8B").
+- query_model: the name of the LLM model used with Ollama framework to generate the query used for document retrieval (default: "llama3.1").
 - query_max_words: the maximum nuber of words allowed for the generated query (default: 7).
 - conv_prompt_filename (MANDATORY): path to the textual file containing the prompt used to generate the conversations.
-- conv_model: the name of the LLM model used with Ollama to generate the conversations (default: "llama3.1").
+- conv_tokenizer: the name of the LLM model used to generate the conversations, which must be the same as 'conv_model' but available on Huggingface. This parameter is required, since we load its tokenizer exclusively to count, for each LLM inference, the number of tokens found in the input prompt. (default: "meta-llama/Llama-3.1-8B").
+- conv_model: the name of the LLM model used with Ollama framework to generate the conversations (default: "llama3.1").
 - create_output_file: boolean flag to be set to create the output file (default: True).
 - output_filename (MANDATORY): name (and path) of the output file.
 

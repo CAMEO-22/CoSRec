@@ -144,6 +144,11 @@ def parse_args() -> argparse.Namespace:
                       dest="query_prompt_filename",
                       type=str,
                       required=True)
+    args.add_argument("--query_tokenizer",
+                      dest="query_tokenizer",
+                      type=str,
+                      default="meta-llama/Llama-3.1-8B",
+                      required=False)
     args.add_argument("--query_model",
                       dest="query_model",
                       type=str,
@@ -158,6 +163,11 @@ def parse_args() -> argparse.Namespace:
                       dest="conv_prompt_filename",
                       type=str,
                       required=True)
+    args.add_argument("--conv_tokenizer",
+                      dest="conv_tokenizer",
+                      type=str,
+                      default="meta-llama/Llama-3.1-8B",
+                      required=False)
     args.add_argument("--conv_model",
                       dest="conv_model",
                       type=str,
@@ -191,10 +201,9 @@ def generate_catalogue_text(products_list: List[str], products_data: Dict[str, d
 
         reviews = [(x["helpful"], x["timestamp"], f"{x['title']} {x['text']}") for x in pd["valid_reviews"]]
         reviews = sorted(reviews, key=operator.itemgetter(0, 1), reverse=True)[:num_reviews]
-        reviews = [re.sub("\\s+", " ", x).strip() for _, _, x in reviews]
         for j, y in enumerate(reviews, start=1):
             catalogue_text += \
-                f"-- \"Review {j}\" = {y}\n"
+                f"-- \"Review {j}\" = {y[2]}\n"
 
         catalogue_text += "\n"
 
@@ -205,8 +214,6 @@ def generate_corpus_text(documents_list: List[str]) -> str:
     corpus_text = ""
 
     for i, x in enumerate(documents_list, start=1):
-        x = re.sub("\\s+", " ", x).strip()
-    
         corpus_text += \
             f"- [Document {i}]:\n" \
             f"-- \"Text\" = {x}\n" \
@@ -383,9 +390,11 @@ def main():
     # ------------------------------------------------------------------------------------------------------------------
     client = ollama.Client(host="http://localhost:11434")
 
-    tokenizer_model = f"{os.environ['HF_HOME']}{os.sep}Meta-Llama-3.1-8B{os.sep}"
-    tokenizer = transformers.AutoTokenizer.from_pretrained(tokenizer_model, local_files_only=True)
-    del tokenizer_model
+    q_tokenizer = transformers.AutoTokenizer.from_pretrained(args.query_tokenizer)
+    if args.conv_tokenizer == args.query_tokenizer:
+        c_tokenizer = q_tokenizer
+    else:
+        c_tokenizer = transformers.AutoTokenizer.from_pretrained(args.conv_tokenizer)
 
     # ------------------------------------------------------------------------------------------------------------------
     # Create the output file on disk.
@@ -421,7 +430,7 @@ def main():
             query_prompt = query_prompt_template.format(**{"product_text": target_text})
 
             qt = time.time_ns()
-            query = generate_text(query_prompt, args.query_model, 100, 100, client, tokenizer)
+            query = generate_text(query_prompt, args.query_model, 100, 100, client, q_tokenizer)
             query = re.sub("\\s+", " ", query) \
                     .replace("\"", "") \
                     .replace("?", "") \
@@ -462,7 +471,8 @@ def main():
             })
 
             ct = time.time_ns()
-            conversation = generate_text(conv_prompt, args.conv_model, 1100, 1000, client, tokenizer)
+            conversation = generate_text(conv_prompt, args.conv_model, 1100, 1000, client,
+                                         c_tokenizer)
             conversation = re.sub("\\s+", " ", conversation)\
                 .replace(" U: ", "\nU: ").replace(" S: ", "\nS: ").strip()
             ct = time.time_ns() - ct
@@ -506,7 +516,11 @@ def main():
     # ------------------------------------------------------------------------------------------------------------------
     # Deallocate the documents retriever, Ollama client, tokenizer, and other objects.
     # ------------------------------------------------------------------------------------------------------------------
-    del products_related_idx, products_data, tokenizer, client, retr
+    del products_related_idx, products_data, client, retr, q_tokenizer
+    try:
+        del c_tokenizer
+    except:
+        pass
 
     print("\nDone!\n", flush=True)
 
