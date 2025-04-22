@@ -2,7 +2,7 @@ Can you imagine a possible conversation between a user and a system, using the i
 The system is composed of two components: a search module and a recommendation module.
 The search module retrieves documents with general information from a heterogeneous textual corpus.
 The recommendation module suggests products suitable to satisfy the user needs of the users.
-The information extracted from both modules are combined in the form of natural language utterances.
+The information extracted from both modules is combined in the form of natural language utterances.
 
 The conversation should start with a short introduction from the user, which is looking to buy a product
 to satisfy his/her [User Need], and the goal is for the system to suggest [Target Product] as the best
@@ -15,7 +15,7 @@ or requires clarifications to the system about both macro subtopics and specific
 The user must pose at least two or three explorative questions during the conversation, with the
 objective of broadening their knowledge of some topic previously mentioned in the conversation.
 Such questions must require information and details found in the [Textual Corpus].
-The system reply focuses in satisfying this knowledge need, summarizing in the main aspects but also
+The system reply focuses on satisfying this knowledge need, summarizing in the main aspects but also
 providing fine-grained details of the subject, if required.
 
 At the end of the conversation the system should have convinced the user to buy the [Target Product].
