@@ -215,7 +215,7 @@ A line of the 'intents.jsonl' file:
 -  **keywords.jsonl**: same as CoSRec Crowd.
 -  **qrels.qrels**: file containing the relevance judgments for all the intents in TREC-style format (NOTE: the ground truth can be split in search ground truth and recommendation ground truth based on the topic id. The recommendation topic ids contain the character '#' while the search topic ids do not).
 
-**Note:** the intent id (file 'intents.jsonl') takes the following form: <conversation_id>_<utterance_id>_<index> where: conversation_id is the identifier of the conversation, utterance_id is the identifier of the utterance (index) WITHIN the conversation and <index> is an incremental field (counter) used to differentiate the identifiers of different intents referring to the same utterance.
+**Note:** the intent id (file 'intents.jsonl') takes the following form: <conversation_id>\_<utterance_id>\_\<index> where: conversation_id is the identifier of the conversation, utterance_id is the identifier of the utterance (index) WITHIN the conversation and <index> is an incremental field (counter) used to differentiate the identifiers of different intents referring to the same utterance.
 
 **Note:** the id of the personalized intents in the qrels file ('qrels.qrels') takes the following form: <intent_id>#<user_index> where: intent_id is the id of the intent (structured as explained above) and user_index is a reference to the user for which the intent is personalized. In particular, the user_index is an integer number between 0 and 4, which correspond to the index of the user in the list of users employed to personalize the intents of the considered conversation (**ordered by lexical order of the users' identifiers**).
 
